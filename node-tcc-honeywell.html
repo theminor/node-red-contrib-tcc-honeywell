@@ -1,0 +1,45 @@
+<script type="text/javascript">
+	RED.nodes.registerType('tcc-honeywell', {
+		category: 'function',
+		color: '#c0deed',
+		defaults: {
+			name: {value: "Honeywell TCC" }
+		},
+		credentials: {
+			username: {type:"text"},
+			password: {type:"password"},
+			deviceID: {type: "text"}
+		},
+		inputs:1,
+		outputs:1,
+		icon: "thermometer-half.png",
+		label: function() {
+			return this.name || "Honeywell TCC";
+		}
+	});
+</script>
+
+<script type="text/x-red" data-template-name="tcc-honeywell">
+	<div class="form-row">
+		<label for="node-input-name"><i class="icon-tag"></i>Name</label>
+		<input type="text" id="node-input-name" placeholder="Honeywell TCC">
+	</div>
+	<div class="form-row">
+		<h4>Honeywell mytotalconnectcomfort.com Login Information</h4>
+		<label for="node-input-username"><i class="icon-tag"></i>Username</label>
+		<input type="text" id="node-input-username" placeholder="user@gmail.com">
+	</div>
+	<div class="form-row">
+		<label for="node-input-password"><i class="icon-tag"></i>Password</label>
+		<input type="text" id="node-input-password" placeholder="password">
+	</div>
+	<div class="form-row">
+		<h4>Thermostat Information</h4>
+		<label for="node-input-deviceID"><i class="icon-tag"></i>Device ID</label>
+		<input type="text" id="node-input-deviceID" placeholder="5555555">
+	</div>
+</script>
+
+<script type="text/x-red" data-help-name="tcc-honeywell">
+	<p>A node that connects to legacy Honeywell thermostats via mytotalconnectcomfort.com</p>
+</script>
