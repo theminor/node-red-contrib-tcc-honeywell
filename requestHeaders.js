@@ -1,3 +1,6 @@
+// Header info modified from https://github.com/NorthernMan54/homebridge-tcc
+// Thanks!
+
 module.exports.defaults = function(node) {
 	return {
 		method: "GET",
