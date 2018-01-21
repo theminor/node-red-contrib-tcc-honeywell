@@ -1,7 +1,7 @@
 {
   "name": "node-red-contrib-tcc-honeywell",
   "version": "0.0.1",
-  "description": "Node for interfacing with legacy (my total connect comfort "TCC") Honeywell thermostats in Node-Red",
+  "description": "Node for interfacing with legacy (my total connect comfort/TCC) Honeywell thermostats in Node-Red",
   "main": "node-tcc-honeywell.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
