@@ -25,6 +25,19 @@ module.exports.postDefaults = function(node) {
 		Password: node.credentials.password,
 		RememberMe: "false"
 	};
+	// rtnObj.url = "https://mytotalconnectcomfort.com/portal/Device/CheckDataSession/" + node.credentials.deviceID + "?_=" + Date.now();		// time stamp must be added now - these requests are time-sensitive
+	return rtnObj;
+};
+
+module.exports.getStatusDefaults = function(node) {
+	var rtnObj = module.exports.defaults(node);
+	rtnObj.headers["Accept"] = "*/*";
+	rtnObj.headers["Accept-Encoding"] = "plain";
+	rtnObj.headers["Cache-Control"] = "max-age=0";
+	rtnObj.headers["Accept-Language"] = "en-US,en,q=0.8";
+	rtnObj.headers["Connection"] = "keep-alive";
+	rtnObj.headers["Referer"] = "https://mytotalconnectcomfort.com/portal/";
+	rtnObj.headers["X-Requested-With"] = "XMLHttpRequest";
 	rtnObj.url = "https://mytotalconnectcomfort.com/portal/Device/CheckDataSession/" + node.credentials.deviceID + "?_=" + Date.now();		// time stamp must be added now - these requests are time-sensitive
 	return rtnObj;
 };
