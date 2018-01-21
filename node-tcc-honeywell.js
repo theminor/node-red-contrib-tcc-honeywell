@@ -78,7 +78,7 @@ module.exports = function(RED) {
 		RED.nodes.createNode(this, config);
 		var node = this;
 		node.jar = request.jar();
-		node.connected: false
+		node.connected = false;
 		node.on('input', function(msg) {
 			var sendMsg = function(node) {
 				msg.payload = node.statusData;
