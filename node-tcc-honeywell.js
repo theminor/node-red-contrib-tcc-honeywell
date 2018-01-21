@@ -47,7 +47,7 @@ var tccLogin = function(node, callback) {
 };
 
 var tccStatus = function(node, callback) {
-	request(hdrs.defaults(node), function(statusErr, statusResponse) {
+	request(hdrs.getStatusDefaults(node), function(statusErr, statusResponse) {
 		if (statusErr || statusResponse.statusCode != ConnectSuccess || statusResponse.statusMessage != "OK") {
 			node.warn('Login to TCC Failed (error at tccStatus() GET)', statusErr);
 			if (statusResponse) node.warn(statusResponse.statusCode);
