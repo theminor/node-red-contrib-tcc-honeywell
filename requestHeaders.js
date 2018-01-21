@@ -1,10 +1,10 @@
-module.exports.defaults = function(connection) {
+module.exports.defaults = function(node) {
 	return {
 		method: "GET",
 		url: "https://mytotalconnectcomfort.com/portal/",
 		timeout: 15000,
 		strictSSL: false,
-		jar: connection.jar,
+		jar: node.jar,
 		headers: {
 			"Content-Type": "application/x-www-form-urlencoded",
 			"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
@@ -17,15 +17,14 @@ module.exports.defaults = function(connection) {
 	}
 };
 
-module.exports.postDefaults = function(connection) {
-	var rtnObj = module.exports.defaults(connection);
+module.exports.postDefaults = function(node) {
+	var rtnObj = module.exports.defaults(node);
 	rtnObj.method = "POST";
 	rtnObj.form = {
-		UserName: connection.usrName,
-		Password: connection.passwd,
+		UserName: node.usrName,
+		Password: node.passwd,
 		RememberMe: "false"
 	};
-	rtnObj.url = "https://mytotalconnectcomfort.com/portal/Device/CheckDataSession/" + connection.deviceID + "?_=" + Date.now();		// time stamp must be added now - these requests are time-sensitive
+	rtnObj.url = "https://mytotalconnectcomfort.com/portal/Device/CheckDataSession/" + node.deviceID + "?_=" + Date.now();		// time stamp must be added now - these requests are time-sensitive
 	return rtnObj;
 };
-
