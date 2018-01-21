@@ -21,10 +21,10 @@ module.exports.postDefaults = function(node) {
 	var rtnObj = module.exports.defaults(node);
 	rtnObj.method = "POST";
 	rtnObj.form = {
-		UserName: node.usrName,
-		Password: node.passwd,
+		UserName: node.credentials.username,
+		Password: node.credentials.password,
 		RememberMe: "false"
 	};
-	rtnObj.url = "https://mytotalconnectcomfort.com/portal/Device/CheckDataSession/" + node.deviceID + "?_=" + Date.now();		// time stamp must be added now - these requests are time-sensitive
+	rtnObj.url = "https://mytotalconnectcomfort.com/portal/Device/CheckDataSession/" + node.credentials.deviceID + "?_=" + Date.now();		// time stamp must be added now - these requests are time-sensitive
 	return rtnObj;
 };
