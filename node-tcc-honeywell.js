@@ -88,9 +88,9 @@ module.exports = function(RED) {
 				msg.description = 'JSON data from Honeywell TCC';
 				node.send(msg);
 			};
-			if (status.connected) tccStatus(connection, sendMsg);
+			if (connection.connected) tccStatus(connection, sendMsg);
 			else tccLogin(connection, function(connection) {
-				if (status.connected) tccStatus(connection, sendMsg);
+				if (connection.connected) tccStatus(connection, sendMsg);
 			});
 		});
 	};
