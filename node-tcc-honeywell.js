@@ -28,7 +28,7 @@ var tccLogin = function(node, callback) {
 					request(hdrs.defaults(node), function(getErr2, getResponse2) {		// GET 2
 						if (getErr2 || getResponse2.statusCode != ConnectSuccess) {
 							node.statusTxt = 'Login to TCC Failed (error at second GET): ' + getErr2;
-							if (getResponse2) node.statusTxt += ' -- Status Code: ' + getResponse2.statusCode);
+							if (getResponse2) node.statusTxt += ' -- Status Code: ' + getResponse2.statusCode;
 							node.connected = false;
 							node.statusCode = 'Get Error: ' + getErr2 + '. Get Response: ' + (getResponse2) ? getResponse2.statusCode : '';
 							return node;
