@@ -10,11 +10,11 @@ So far it is just reading the status from the API. Still need to add the ability
 Currently working on the input side - commands that the (undocumented) api seem to accept are:
 ( see http://codegists.com/code/honeywell-thermostat/ and http://www.bradgoodman.com/thermostat/ )
 
-`SystemSwitch`	 0 = emergency heat; 1 = heat; 2 = cool
-`HeatSetpoint`		temperature to set the heat to
-`CoolSetpoint`  temperature to set the a/c to
-`HeatNextPeriod`  time to end hold and go back to next scheduled action
-`CoolNextPeriod`  time to end hold and go back to next scheduled action
-`StatusHeat`  1 for hold, 0 for regular (set to 0 to cancel an existing hold)
-`StatusCool`  1 for hold, 0 for regular (set to 0 to cancel an existing hold)
-`FanMode`  0 = auto; 1 = on
+* `SystemSwitch`	 0 = emergency heat; 1 = heat; 2 = cool
+* `HeatSetpoint`		temperature to set the heat to
+* `CoolSetpoint`  temperature to set the a/c to
+* `HeatNextPeriod`  time to end hold and go back to next scheduled action
+* `CoolNextPeriod`  time to end hold and go back to next scheduled action
+* `StatusHeat`  1 for hold, 0 for regular (set to 0 to cancel an existing hold)
+* `StatusCool`  1 for hold, 0 for regular (set to 0 to cancel an existing hold)
+* `FanMode`  0 = auto; 1 = on
