@@ -71,6 +71,33 @@ var tccStatus = function(node, callback) {
 	});
 };
 
+var tccSetSetpoint = function(heatSetpoint, coolSetpoint, node, callback) {
+	node.heatSetPoint = heatSetpoint;
+	node.coolSetPoint = coolSetpoint;
+	request(hdrs.setSetpointDefaults(node), function(setspErr, setspResponse) {
+		if (setspErr || setspResponse.statusCode != ConnectSuccess || setspResponse.statusMessage != "OK") {
+			node.statusTxt = 'Error Seeting Temperature Setpoint (error at tccSetSetpoint() POST): ' + setspErr;
+			if (setspResponse) node.statusTxt += ' -- Status Code: ' + setspResponse.statusCode;
+			// node.connected = false;		// *** disconnect if set fails?
+			node.statusCode = setspResponse.statusCode;
+			return node;
+		} else {
+			node.statusTxt = 'Successful POST in tccSetSetpoint() - Status Code: ' + setspResponse.statusCode + ' -- JSON Response Body:\n' + setspResponse.body;
+			node.connected = true;						// true whether or not the response can be parsed into an object
+			node.statusCode = setspResponse.statusCode;
+			try {
+				node.statusData = JSON.parse(setspResponse.body);
+			} catch(err) {
+				node.statusTxt = 'Error parsing JSON Response Body: ' + err;
+				node.statusCode = setspResponse.statusCode + ' - with error parsing JSON Response Body: ' + err;
+				node.statusData = setspResponse.body;	// return the text of the response only. Should we return null instead, since it can't be parsed into an object?
+			}
+			callback(node);
+			return node;
+		}
+	});
+};
+
 module.exports = function(RED) {
 	var reg = function(config) {
 		RED.nodes.createNode(this, config);
