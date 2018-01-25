@@ -44,9 +44,10 @@ module.exports.getStatusDefaults = function(node) {
 	return rtnObj;
 };
 
-module.exports.setSetpointDefaults = function(node) {
+module.exports.changeSettingDefaults = function(node, settingName, settingVal) {
 	var rtnObj = module.exports.defaults(node);
 	rtnObj.method = "POST";
+	rtnObj.url = "https://mytotalconnectcomfort.com/portal/Device/SubmitControlScreenChanges";
 	rtnObj.headers["Accept"] = "application/json, text/javascript, */*; q=0.01";
 	rtnObj.headers["Accept-Encoding"] = "gzip, deflate";
 	rtnObj.headers["Accept-Language"] = "en-US,en;q=0.5";
@@ -56,28 +57,9 @@ module.exports.setSetpointDefaults = function(node) {
 	rtnObj.headers["Origin"] = "https://mytotalconnectcomfort.com";
 	rtnObj.headers["Referer"] = "https://mytotalconnectcomfort.com/portal/Device/Control/" + node.credentials.deviceID;
 	rtnObj.headers["X-Requested-With"] = "XMLHttpRequest";
-	rtnObj.url = "https://mytotalconnectcomfort.com/portal/Device/SubmitControlScreenChanges";
-	rtnObj.body = JSON.stringify({
+	var bodyDefaults = {
 		"DeviceID": Number(node.credentials.deviceID),
 		"SystemSwitch": null,
-		"HeatSetpoint": node.heatSetPoint,		// *** seperate functions for these? Set other to null?
-		"CoolSetpoint": node.coolSetPoint,
-		"HeatNextPeriod": null,
-		"CoolNextPeriod": null,
-		"StatusHeat": 1,
-		"StatusCool": 1,
-		"FanMode": null
-	});
-	return rtnObj;
-};
-
-module.exports.setSysSwitchDefaults = function(node) {
-	var rtnObj = module.exports.defaults(node);
-	rtnObj.method = "POST";
-	rtnObj.url = "https://mytotalconnectcomfort.com/portal/Device/SubmitControlScreenChanges";
-	rtnObj.body = JSON.stringify({
-		"DeviceID": Number(node.credentials.deviceID),
-		"SystemSwitch": Number(node.systemSwitch),
 		"HeatSetpoint": null,
 		"CoolSetpoint": null,
 		"HeatNextPeriod": null,
@@ -85,15 +67,10 @@ module.exports.setSysSwitchDefaults = function(node) {
 		"StatusHeat": null,
 		"StatusCool": null,
 		"FanMode": null
-	});
-	rtnObj.headers["Accept"] = "application/json, text/javascript, */*; q=0.01";
-	rtnObj.headers["Accept-Encoding"] = "gzip, deflate";
-	rtnObj.headers["Accept-Language"] = "en-US,en;q=0.5";
-	rtnObj.headers["Connection"] = "Keep-Alive";
-	rtnObj.headers["Cache-Control"] = "no-cache";
-	rtnObj.headers["Content-Type"] = "application/json; charset=UTF-8";
-	rtnObj.headers["Origin"] = "https://mytotalconnectcomfort.com";
-	rtnObj.headers["Referer"] = "https://mytotalconnectcomfort.com/portal/Device/Control/" + node.credentials.deviceID;
-	rtnObj.headers["X-Requested-With"] = "XMLHttpRequest";
+	};
+	bodyDefaults[settingName] = settingVal;
+	if (settingName == "HeatSetpoint") bodyDefaults["StatusHeat"] = 1;
+	if (settingName == "CoolSetpoint") bodyDefaults["StatusCool"] = 1;
+	rtnObj.body = JSON.stringify(bodyDefaults);
 	return rtnObj;
 };
