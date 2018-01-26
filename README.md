@@ -1,13 +1,11 @@
 # node-red-contrib-tcc-honeywell
-Honeywell Legacy Thermostats Node for Node-Red
-
-Pulls data from the Honeywell TCC (Total Connect Comfort) API, which appears to be mostly undocumented now.
+Interface for Honeywell Legacy Thermostats Node for Node-Red. Pulls data from the Honeywell TCC (Total Connect Comfort) API, which appears to be mostly undocumented now.
 
 *Still under development.*
 
-So far it is just reading the status from the API. Still working on the ability to send data. Interaction will probably be limited to turning the termostat on and off, setting a hold temperature, changing the running mode (heat, cool, etc.), etc.
+Presently testing the ability to send data. Changng settings is limited to data that can be sent to the api body. Since the api is undocumented, the only things I've found are turning the termostat on and off, setting a hold temperature, changing the running mode (heat, cool, etc.), and setting a hold time.
 
-Currently working on the input side - commands that the (undocumented) api seem to accept are:
+From other sources (referenced below), the commands that the (undocumented) api seems to accept are:
 
 * `SystemSwitch`	 0 = emergency heat; 1 = heat; 2 = cool
 * `HeatSetpoint`		temperature to set the heat to
@@ -18,7 +16,7 @@ Currently working on the input side - commands that the (undocumented) api seem 
 * `StatusCool`  1 for hold, 0 for regular (set to 0 to cancel an existing hold)
 * `FanMode`  0 = auto; 1 = on
 
-For a node input, to change a setting, `msg.payload` is expected to be an object (or JSON) containing the settings to send in the request to the thermostat. For example, to set the cool setpoint until a time: msg.payload could be `{ CoolNextPeriod: 12345, CoolSetpoint: 74, StatusCool: 1 }`. If `msg.payload` is instead the string `"status"` - or if it is any string or anything other than JSON or an object - the node will simply request the status from the thermostat and return the result. Results are output as an object, but can be converted to JSON.
+In node-red, for a node input, to change a setting, `msg.payload` is expected to be an object (or JSON) containing the settings to send in the request to the thermostat. For example, to set the cool setpoint until a time: msg.payload could be `{ CoolNextPeriod: 12345, CoolSetpoint: 74, StatusCool: 1 }`. If `msg.payload` is instead the string `"status"` - or if it is any string or anything other than JSON or an object - the node will simply request the status from the thermostat and return the result. Results are output as an object, but can be converted to JSON.
 
 Some Useful References:
 * https://github.com/NorthernMan54/homebridge-tcc
