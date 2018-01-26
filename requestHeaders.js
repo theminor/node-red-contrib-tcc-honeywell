@@ -44,7 +44,7 @@ module.exports.getStatusDefaults = function(node) {
 	return rtnObj;
 };
 
-module.exports.changeSettingDefaults = function(node, settingName, settingVal) {
+module.exports.changeSettingDefaults = function(node, settingsObj) {
 	var rtnObj = module.exports.defaults(node);
 	rtnObj.method = "POST";
 	rtnObj.url = "https://mytotalconnectcomfort.com/portal/Device/SubmitControlScreenChanges";
@@ -68,9 +68,6 @@ module.exports.changeSettingDefaults = function(node, settingName, settingVal) {
 		"StatusCool": null,
 		"FanMode": null
 	};
-	bodyDefaults[settingName] = settingVal;
-	if (settingName == "HeatSetpoint") bodyDefaults["StatusHeat"] = 1;
-	if (settingName == "CoolSetpoint") bodyDefaults["StatusCool"] = 1;
-	rtnObj.body = JSON.stringify(bodyDefaults);
+	rtnObj.body = JSON.stringify(Object.assign(bodyDefaults, settingsObj));		// iterate settingsObj and change bodyDefaults for each property in it
 	return rtnObj;
 };
