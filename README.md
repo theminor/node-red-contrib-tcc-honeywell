@@ -18,6 +18,8 @@ Currently working on the input side - commands that the (undocumented) api seem 
 * `StatusCool`  1 for hold, 0 for regular (set to 0 to cancel an existing hold)
 * `FanMode`  0 = auto; 1 = on
 
+For a node input, to change a setting, `msg.payload` is expected to be an object (or JSON) containing the settings to send in the request to the thermostat. For example, to set the cool setpoint until a time: msg.payload could be `{ CoolNextPeriod: 12345, CoolSetpoint: 74, StatusCool: 1 }`. If `msg.payload` is instead the string `"status"` - or if it is any string or anything other than JSON or an object - the node will simply request the status from the thermostat and return the result. Results are output as an object, but can be converted to JSON.
+
 Some Useful References:
 * https://github.com/NorthernMan54/homebridge-tcc
 * http://codegists.com/code/honeywell-thermostat/
