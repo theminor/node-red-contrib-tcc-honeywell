@@ -71,11 +71,16 @@ var tccStatus = function(node, callback) {
 	});
 };
 
-var tccChangeSetting = function(setting, val, node, callback) {
-	request(hdrs.changeSettingDefaults(node, setting, val), function(settingErr, settingResponse) {
+// structure of input (msg.payload):
+// if an object or JSON is recieved, the passed settings will be sent to the thermostat. For example, to set the cool setpoint until a time:
+// { CoolNextPeriod: 12345, CoolSetpoint: 74, StatusCool: 1 }
+// if msg is not an object or JSON, simply return the status
+
+var tccChangeSetting = function(settingsObj, node, callback) {
+	request(hdrs.changeSettingDefaults(node, settingsObj), function(settingErr, settingResponse) {
 		if (settingResponse.statusCode) node.statusCode = settingResponse.statusCode;		
 		if (settingErr || settingResponse.statusCode != ConnectSuccess || settingResponse.statusMessage != "OK") {
-			node.statusTxt = 'Error Changing Setting ' + setting + ' to ' + val + ' (error at tccChangeSetting() POST request): ' + settingErr;
+			node.statusTxt = 'Error Changing Settings: \n' + JSON.stringify(settingsObj) + '\n (error at tccChangeSetting() POST request): ' + settingErr;
 			if (settingResponse) node.statusTxt += ' -- Status Code: ' + settingResponse.statusCode;
 			// node.connected = false;		// *** disconnect if set fails?
 			return node;
@@ -100,17 +105,39 @@ module.exports = function(RED) {
 		var node = this;
 		node.jar = request.jar();
 		node.connected = false;
-		node.on('input', function(msg) {
+		node.on('input', function(msg) {			
+			if (typeof msg.payload === 'string' || msg.payload instanceof String) {
+				try {
+					msg.payload = JSON.parse(msg.payload);
+				} catch(e) {
+					msg.payload = 'status';									// a recieved payload of 'status' (or anything that can't be parsed) will just check the status
+				}
+			} else {
+																			// it's something else - we assume it is an object, if not a string. So do nothing (?)
+			}
 			var sendMsg = function(node) {
 				msg.payload = node.statusData;
-				msg.title = 'Honeywell TCC Data';					// see https://github.com/node-red/node-red/wiki/Node-msg-Conventions
+				msg.title = 'Honeywell TCC Data';							// see https://github.com/node-red/node-red/wiki/Node-msg-Conventions
 				msg.description = 'JSON data from Honeywell TCC';
 				node.send(msg);
 			};
-			if (node.connected) tccStatus(node, sendMsg);
-			else tccLogin(node, function(node) {
-				if (node.connected) tccStatus(node, sendMsg);
-			});
+			if (node.connected) {
+				if (msg.payload == 'status') {								// request for a simple status update
+					tccStatus(node, sendMsg);
+				} else {
+					tccChangeSetting(setting, val, node, sendMsg);			// **** TO DO - change from a setting/val model to an object passed!
+				}															// some other node data recieved - assume it is object with data to modify
+			} else {														// not connected, so try to connect first								
+				tccLogin(node, function(node) {
+					if (node.connected) {
+						if (msg.payload == 'status') {						// request for a simple status update
+							tccStatus(node, sendMsg);
+						} else {											// some other node data recieved - assume it is object with data to modify
+							tccChangeSetting(setting, val, node, sendMsg);	// **** TO DO - change from a setting/val model to an object passed!
+						}
+					}
+				});
+			}
 		});
 	};
 	RED.nodes.registerType('tcc-honeywell', reg, { credentials: { username: {type: "text"}, password: {type: "password"},	deviceID: {type: "text"} } });
