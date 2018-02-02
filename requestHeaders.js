@@ -1,7 +1,7 @@
 // Header info modified from https://github.com/NorthernMan54/homebridge-tcc
 // Thanks!
 
-module.exports.defaults = function(node) {
+module.exports.getDefaults = function(node) {
 	return {
 		method: "GET",
 		url: "https://mytotalconnectcomfort.com/portal/",
@@ -21,7 +21,7 @@ module.exports.defaults = function(node) {
 };
 
 module.exports.postDefaults = function(node) {
-	var rtnObj = module.exports.defaults(node);
+	var rtnObj = module.exports.getDefaults(node);
 	rtnObj.method = "POST";
 	rtnObj.form = {
 		UserName: node.credentials.username,
@@ -31,8 +31,8 @@ module.exports.postDefaults = function(node) {
 	return rtnObj;
 };
 
-module.exports.getStatusDefaults = function(node) {
-	var rtnObj = module.exports.defaults(node);
+module.exports.getStatus = function(node) {
+	var rtnObj = module.exports.getDefaults(node);
 	rtnObj.headers["Accept"] = "*/*";
 	rtnObj.headers["Accept-Encoding"] = "plain";
 	rtnObj.headers["Cache-Control"] = "max-age=0";
@@ -44,8 +44,8 @@ module.exports.getStatusDefaults = function(node) {
 	return rtnObj;
 };
 
-module.exports.changeSettingDefaults = function(node, settingsObj) {
-	var rtnObj = module.exports.defaults(node);
+module.exports.changeSetting = function(node, settingsObj) {
+	var rtnObj = module.exports.getDefaults(node);
 	rtnObj.method = "POST";
 	rtnObj.url = "https://mytotalconnectcomfort.com/portal/Device/SubmitControlScreenChanges";
 	rtnObj.headers["Accept"] = "application/json, text/javascript, */*; q=0.01";
