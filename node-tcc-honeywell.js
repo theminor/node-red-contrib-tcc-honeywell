@@ -41,9 +41,9 @@ var tccRequest = function(node, headers, debugIdentifier, successStatusCode, cal
 };
 
 var tccLogin = function(node, callback) {
-	tccRequest(node, hdrs.defaults(node), 'TCC Login first GET', ConnectSuccess, function(node) {
+	tccRequest(node, hdrs.getDefaults(node), 'TCC Login first GET', ConnectSuccess, function(node) {
 		tccRequest(node, hdrs.postDefaults(node), 'TCC Login POST', PostSuccess, function(node) {
-			tccRequest(node, hdrs.defaults(node), 'TCC Login second GET', ConnectSuccess, function(node) {
+			tccRequest(node, hdrs.getDefaults(node), 'TCC Login second GET', ConnectSuccess, function(node) {
 				callback(node);
 			};
 		};
@@ -59,10 +59,10 @@ module.exports = function(RED) {
 		node.on('input', function(msg) {
             var process = function() {
                 if (typeof msg.payload !== 'string') msg.payload = JSON.stringify(msg.payload);
-                if (msg.payload.charAt(0) === '{') {                                // it is a command
-                    tccRequest(node, hdrs.changeSettingDefaults(node, msg.payload), 'TCC Command ' + msg.payload + ': ', ConnectSuccess, sendMsg);
-                } else {                                                            // it is a status request
-                    tccRequest(node, hdrs.getStatusDefaults(node), 'TCC Status GET', ConnectSuccess, sendMsg);
+                if (msg.payload.charAt(0) === '{') {							// it is a command
+                    tccRequest(node, hdrs.changeSetting(node, msg.payload), 'TCC Command ' + msg.payload + ': ', ConnectSuccess, sendMsg);
+                } else {														// it is a status request
+                    tccRequest(node, hdrs.getStatus(node), 'TCC Status GET', ConnectSuccess, sendMsg);
                 }
             };
             if (node.connected) process(); else tccLogin(node, process());
