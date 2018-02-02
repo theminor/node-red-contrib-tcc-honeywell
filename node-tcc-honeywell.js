@@ -21,7 +21,7 @@ var tccRequest = function(node, headers, debugIdentifier, successStatusCode, cal
 				}
 			}
 		}
-		if (err || response.statusCode != successStatusCode || response.statusMessage ? response.statusMessage != SuccessStatusMsg : false) {	// possible issue: response.statusMessage may not always be "OK" for all requests? Need to verify
+		if (err || response.statusCode != successStatusCode || (response && response.statusMessage) ? response.statusMessage != SuccessStatusMsg : false) {	// possible issue: response.statusMessage may not always be "OK" for all requests? Need to verify
 			node.connected = false;
 			node.statusTxt += 'Error: ' + err;
 			return node;
