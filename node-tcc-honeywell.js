@@ -37,7 +37,7 @@ var tccRequest = function(node, headers, debugIdentifier, successStatusCode, cal
 			node.connected = true;
 			callback(node)
 		}
-	};
+	});
 };
 
 var tccLogin = function(node, callback) {
