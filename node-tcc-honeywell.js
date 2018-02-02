@@ -50,19 +50,6 @@ var tccLogin = function(node, callback) {
 	};
 };
 
-var tccStatus = function(node, callback) {
-	tccRequest(node, hdrs.getStatusDefaults(node), 'TCC Status GET', ConnectSuccess, function(node) {
-		callback(node);
-	};
-};
-
-var tccCmd = function(payload, node, callback) {
-    tccRequest(node, hdrs.changeSettingDefaults(node, payload), 'TCC Command ' + payload + ': ', ConnectSuccess, function(node) {
-		callback(node);
-    };
-    
-};
-
 module.exports = function(RED) {
 	RED.nodes.registerType('tcc-honeywell', function(config) {
 		RED.nodes.createNode(this, config);
