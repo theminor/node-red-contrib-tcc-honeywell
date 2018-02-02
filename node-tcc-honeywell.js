@@ -17,7 +17,7 @@ var tccRequest = function(node, headers, debugIdentifier, successStatusCode, cal
 					node.statusData = JSON.parse(response.body);
 				} catch(pErr) {
 					node.statusTxt = ' -- with error parsing JSON Response Body: ' + pErr;
-					node.statusData = response.body;                            // if body can't be parsed as JSON, retun the body as-is
+					node.statusData = response.body;                            			// if body can't be parsed as JSON, retun the body as-is
 				}
 			}
 		}
@@ -54,17 +54,18 @@ module.exports = function(RED) {
 				msg.payload = node.statusData;
 				msg.title = 'Honeywell TCC Data';                                           // see https://github.com/node-red/node-red/wiki/Node-msg-Conventions
 				msg.description = 'JSON data from Honeywell TCC';
+				msg.tccStatusTxt = node.statusTxt;											// useful for debugging
 				node.send(msg);
 			};
             var process = function() {
                 if (typeof msg.payload !== 'string') msg.payload = JSON.stringify(msg.payload);
-                if (msg.payload.charAt(0) === '{') {							// it is a command
+                if (msg.payload.charAt(0) === '{') {										// it is a command
                     tccRequest(node, hdrs.changeSetting(node, msg.payload), 'TCC Command ' + msg.payload + ': ', ConnectSuccess, sendMsg);
-                } else {														// it is a status request
+                } else {																	// it is a status request
                     tccRequest(node, hdrs.getStatus(node), 'TCC Status GET', ConnectSuccess, sendMsg);
                 }
             };
-            if (node.connected) process(); else tccLogin(node, process());
+            if (node.connected) process(); else tccLogin(node, setTimeout(process, 1000);	// added a delay to see if needed (?)
 		});
 	}, { credentials: { username: {type: "text"}, password: {type: "password"},	deviceID: {type: "text"} } } );
 };
