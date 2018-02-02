@@ -45,9 +45,9 @@ var tccLogin = function(node, callback) {
 		tccRequest(node, hdrs.postDefaults(node), 'TCC Login POST', PostSuccess, function(node) {
 			tccRequest(node, hdrs.getDefaults(node), 'TCC Login second GET', ConnectSuccess, function(node) {
 				callback(node);
-			};
-		};
-	};
+			});
+		});
+	});
 };
 
 module.exports = function(RED) {
