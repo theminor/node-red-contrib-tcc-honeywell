@@ -6,13 +6,6 @@ const ConnectSuccess = 200;
 const PostSuccess = 302;
 const SuccessStatusMsg = 'OK';
 
-var sendMsg = function(node) {
-    msg.payload = node.statusData;
-    msg.title = 'Honeywell TCC Data';                                           // see https://github.com/node-red/node-red/wiki/Node-msg-Conventions
-    msg.description = 'JSON data from Honeywell TCC';
-    node.send(msg);
-};
-
 var tccRequest = function(node, headers, debugIdentifier, successStatusCode, callback) {
 	request(headers, function(err, response) {
 		node.statusTxt = debugIdentifier + ': ';
@@ -57,6 +50,12 @@ module.exports = function(RED) {
 		node.jar = request.jar();
 		node.connected = false;
 		node.on('input', function(msg) {
+			var sendMsg = function(node) {
+				msg.payload = node.statusData;
+				msg.title = 'Honeywell TCC Data';                                           // see https://github.com/node-red/node-red/wiki/Node-msg-Conventions
+				msg.description = 'JSON data from Honeywell TCC';
+				node.send(msg);
+			};
             var process = function() {
                 if (typeof msg.payload !== 'string') msg.payload = JSON.stringify(msg.payload);
                 if (msg.payload.charAt(0) === '{') {							// it is a command
