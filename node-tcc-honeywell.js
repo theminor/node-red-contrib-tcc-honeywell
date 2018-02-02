@@ -65,7 +65,7 @@ module.exports = function(RED) {
                     tccRequest(node, hdrs.getStatus(node), 'TCC Status GET', ConnectSuccess, sendMsg);
                 }
             };
-            if (node.connected) process(); else tccLogin(node, setTimeout(process, 1000);	// added a delay to see if needed (?)
+            if (node.connected) process(); else tccLogin(node, setTimeout(process, 1000));	// added a delay to see if needed (?)
 		});
 	}, { credentials: { username: {type: "text"}, password: {type: "password"},	deviceID: {type: "text"} } } );
 };
