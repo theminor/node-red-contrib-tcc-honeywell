@@ -1,9 +1,7 @@
 # node-red-contrib-tcc-honeywell
 Interface for Honeywell Legacy Thermostats Node for Node-Red. Pulls data from the Honeywell TCC (Total Connect Comfort) API, which appears to be mostly undocumented now.
 
-*Still under development.*
-
-Presently testing the ability to send data. Changng settings is limited to data that can be sent to the api body. Since the api is undocumented, the only things I've found are turning the termostat on and off, setting a hold temperature, changing the running mode (heat, cool, etc.), and setting a hold time.
+Project status: presently testing the ability to send data. Getting the status works fine and changng settings seems to properly connect tot he API and return data, but I have had issues with the cahnges actually being reflected on my thermostat. Settings are limited to data that can be sent to the api body. Since the api is undocumented, the only things I've found are turning the termostat on and off, setting a hold temperature, changing the running mode (heat, cool, etc.), and setting a hold time.
 
 From other sources (referenced below), the commands that the (undocumented) api seems to accept are:
 
