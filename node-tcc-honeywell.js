@@ -58,11 +58,15 @@ module.exports = function(RED) {
 				node.send(msg);
 			};
             var process = function() {
-                if (typeof msg.payload !== 'string') msg.payload = JSON.stringify(msg.payload);
-                if (msg.payload.charAt(0) === '{') {										// it is a command
-                    tccRequest(node, hdrs.changeSetting(node, msg.payload), 'TCC Command ' + msg.payload + ': ', ConnectSuccess, sendMsg);
-                } else {																	// it is a status request
-                    tccRequest(node, hdrs.getStatus(node), 'TCC Status GET', ConnectSuccess, sendMsg);
+                if (typeof msg.payload !== 'string') {		// it is a command
+                    tccRequest(node, 
+															 hdrs.changeSetting(node, msg.payload), 
+															 'TCC Command ' + 
+																	JSON.stringify(msg.payload) + ': ', 
+															 ConnectSuccess, sendMsg);
+                } else {									// it is a status request
+                    tccRequest(node, hdrs.getStatus(node), 
+															 'TCC Status GET', ConnectSuccess, sendMsg);
                 }
             };
             if (node.connected) process(); else tccLogin(node, function(node) {setTimeout(process, 1000)});	// added a delay to see if needed (?)
