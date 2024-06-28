@@ -3,7 +3,9 @@ Interface for Honeywell Legacy Thermostats Node for Node-Red. Pulls data from th
 
 **Please note that this project is no longer maintained - feel free to fork or send me pull requests!**
 
-Project status: presently testing the ability to send data. Getting the status works fine and changng settings seems to properly connect tot he API and return data, but I have had issues with the cahnges actually being reflected on my thermostat. Settings are limited to data that can be sent to the api body. Since the api is undocumented, the only things I've found are turning the termostat on and off, setting a hold temperature, changing the running mode (heat, cool, etc.), and setting a hold time.
+Project status: presently testing the ability to send data. Getting the status works fine and cchanging settings seems to properly connect to the API and return data, but I have had issues with the cahnges actually being reflected on my thermostat. Settings are limited to data that can be sent to the api body. Since the api is undocumented, the only things I've found are turning the termostat on and off, setting a hold temperature, changing the running mode (heat, cool, etc.), and setting a hold time.
+
+Note: as discussed in [this link](https://github.com/theminor/node-red-contrib-tcc-honeywell/issues/2#issuecomment-2192062993), you may experience crashing if the node is called too often. Try limiting the frequency to no more than once every 5 minutes.
 
 From other sources (referenced below), the commands that the (undocumented) api seems to accept are:
 
